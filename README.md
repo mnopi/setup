@@ -1,2 +1,2 @@
 # linuxdev
-Linux development desktop
+Kali development desktop
