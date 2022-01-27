@@ -1,0 +1,10 @@
+#!/bin/sh
+[submodule "WhiteSur-gtk-theme"]
+        path = WhiteSur-gtk-theme
+        url = https://github.com/vinceliuice/WhiteSur-gtk-theme.git
+[submodule "WhiteSur-icon-theme"]
+        path = WhiteSur-icon-theme
+        url = https://github.com/vinceliuice/WhiteSur-icon-theme.git
+[submodule "WhiteSur-wallpapers"]
+        path = WhiteSur-wallpapers
+        url = https://github.com/vinceliuice/WhiteSur-wallpapers.git
