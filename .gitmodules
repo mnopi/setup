@@ -1,0 +1,12 @@
+[submodule "WhiteSur-gtk-theme"]
+	path = modules/WhiteSur-gtk-theme
+	url = https://github.com/vinceliuice/WhiteSur-gtk-theme.git
+[submodule "WhiteSur-icon-theme"]
+	path = modules/WhiteSur-icon-theme
+	url = https://github.com/vinceliuice/WhiteSur-icon-theme.git
+[submodule "WhiteSur-wallpapers"]
+	path = modules/WhiteSur-wallpapers
+	url = https://github.com/vinceliuice/WhiteSur-wallpapers.git
+[submodule "dotdrop"]
+	path = modules/dotdrop
+	url = https://github.com/deadc0de6/dotdrop.git
