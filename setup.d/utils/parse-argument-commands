@@ -1,0 +1,8 @@
+#!/bin/sh
+
+#
+# called by scripts that will based on the system to parse '--commands' argument and show the command
+
+set -eu
+
+[ "${2-}" != '--default' ] || { to --command="$1"; exit 1; }
