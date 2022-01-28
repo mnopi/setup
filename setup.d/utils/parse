@@ -1,0 +1,10 @@
+#!/bin/sh
+
+#
+# called by scripts that will based on the system to parse --default or --run arguments and show the command
+
+set -eu
+
+case "${1-}" in 
+  --default|--run) to --command="$2"; exit 1;;
+esac

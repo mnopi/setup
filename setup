@@ -11,16 +11,15 @@ main() {
   cd "$(dirname "$0")"; SETUP="${PWD}"; export SETUP
   script="${0##*/}"; export SCRIPT_D="${SETUP}/${script}.d"
   export PATH="${SCRIPT_D}/utils:${PATH}"
-
   for arg; do
-    shift
     case "${arg}" in
       --default) to --scripts | sh -s "${arg}"; exit ;;
-      --run) run=1 ;;
-      *)
+      --run) run="${arg}" ;;
+      *) set -- "${arg}" "$@"
     esac
-    [ "${run-}" -eq 1 ] || set -- "${arg}" "$@"
+    shift
   done
+  echo "$@" | grep b
 }
 
 main "$@"
