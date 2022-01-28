@@ -3,11 +3,7 @@
 set -eu
 
 main() {
-  for arg; do
-    case "${arg}" in)
-      --commands) echo "${0}" ;;
-    esac
-  done
+  parse-argument-commands "$0" "$@" || exit
 }
 
 main "$@"

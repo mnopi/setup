@@ -2,15 +2,24 @@
 
 set -eu
 
+# Options
+#   --commands  show all commands and exit.
+#   --default   show commands that will run by default and exit.
+#   --run       forces a command to be run and be installed in the system even if does not default.
+
 main() {
   cd "$(dirname "$0")"; SETUP="${PWD}"; export SETUP
   script="${0##*/}"; export SCRIPT_D="${SETUP}/${script}.d"
   export PATH="${SCRIPT_D}/utils:${PATH}"
 
   for arg; do
+    shift
     case "${arg}" in
-      --commands) to --scripts | sh -s --commands; exit ;;
+      --default) to --scripts | sh -s "${arg}"; exit ;;
+      --run) run=1 ;;
+      *)
     esac
+    [ "${run-}" -eq 1 ] || set -- "${arg}" "$@"
   done
 }
 

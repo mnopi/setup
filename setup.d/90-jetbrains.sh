@@ -2,12 +2,10 @@
 
 set -eu
 
+
 main() {
-  for arg; do
-    case "${arg}" in)
-      --commands) echo "${0}" ;;
-    esac
-  done
+  { [ "${VGA-}" ] || [ "${1-}" = '--run' ]; } || exit
+  to --command="$0"
 }
 
 main "$@"
