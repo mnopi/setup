@@ -1,3 +1,3 @@
 #!/bin/sh
 
-debconf-set-selections preseed.cfg
+debconf-set-selections -c preseed.cfg

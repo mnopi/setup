@@ -11,15 +11,24 @@ main() {
   cd "$(dirname "$0")"; SETUP="${PWD}"; export SETUP
   script="${0##*/}"; export SCRIPT_D="${SETUP}/${script}.d"
   export PATH="${SCRIPT_D}/utils:${PATH}"
+  
   for arg; do
     case "${arg}" in
       --default) to --scripts | sh -s "${arg}"; exit ;;
+      --dry-run) export DRY_RUN=1 ;;
       --run) run="${arg}" ;;
       *) set -- "${arg}" "$@"
     esac
     shift
   done
-  echo "$@" | grep b
+  
+  commands="$(to --default)"
+  # TODO: aqui lo dejo -  ... falta el ver el resumen del --run 
+  if [ "$#" -eq 0 ]; then 
+    [ ! "${run-}" ] || commands="$(to "${arg}")"
+  else
+    echo "$@" | grep b
+  fi
 }
 
 main "$@"

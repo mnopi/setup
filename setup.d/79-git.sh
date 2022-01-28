@@ -13,6 +13,8 @@ main() {
     --run) run=true; [ ! "${DRY_RUN-}" ] || { echo "${command}"; exit: } ;;
   esac
   
+  $run || { echo Skipping: "${command}"; exit ;; }
+
   if command -vp git >/dev/null; then
     # verbose Nothing To Do: "${command}"
     echo Nothing To Do: "${command}"
