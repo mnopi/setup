@@ -238,23 +238,27 @@ export UBUNTU
 # </html>
 export UNAME
 
+# '1' if VGA.
+#
+export VGA
+
 #######################################
 # distribution ID
 #######################################
 dist_id() {
   case "${DIST_ID}" in
     alpine)
-      ALPINE_LIKE='1'; DIST_ID_LIKE="${DIST_ID}"
-      if [ -r '/etc/nix' ]; then NIXOS='1'; PM='nix-env'; else ALPINE='1'; PM='apk'; fi
+      ALPINE_LIKE=1; DIST_ID_LIKE="${DIST_ID}"
+      if [ -r '/etc/nix' ]; then NIXOS=1; PM='nix-env'; else ALPINE=1; PM='apk'; fi
       ;;
-    arch) ARCH='1'; PM='pacman' ;;
-    centos) CENTOS='1'; PM='yum' ;;
-    debian) DEBIAN='1'; DEBIAN_LIKE='1'; DIST_ID_LIKE="${DIST_ID}" ;;
-    fedora) FEDORA='1'; FEDORA_LIKE='1'; PM='dnf' ;;
-    kali) KALI='1' ;;
-    rhel) RHEL='1'; RHEL_LIKE='1'; PM='yum' ;;
-    ubuntu) UBUNTU='1' ;;
-    *) DIST_UNKNOWN='1' ;;
+    arch) ARCH=1; PM='pacman' ;;
+    centos) CENTOS=1; PM='yum' ;;
+    debian) DEBIAN=1; DEBIAN_LIKE=1; DIST_ID_LIKE="${DIST_ID}" ;;
+    fedora) FEDORA=1; FEDORA_LIKE=1; PM='dnf' ;;
+    kali) KALI=1 ;;
+    rhel) RHEL=1; RHEL_LIKE=1; PM='yum' ;;
+    ubuntu) UBUNTU=1 ;;
+    *) DIST_UNKNOWN=1 ;;
   esac
 }
 
@@ -262,10 +266,10 @@ dist_id() {
 # distribution ID like
 #######################################
 dist_id_like() {
-  case "${DIST_ID}" in
-    debian) DEBIAN_LIKE='1'; PM='apt' ;;
-    *fedora*) FEDORA_LIKE='1';;
-    *rhel*) RHEL_LIKE='1' ;;
+  case "${DIST_ID_LIKE}" in
+    debian) DEBIAN_LIKE=1; PM='apt' ;;
+    *fedora*) FEDORA_LIKE=1; DIST_ID_LIKE='fedora' ;;
+    *rhel*) RHEL_LIKE=1; DIST_ID_LIKE='rhel' ;;
   esac
 }
 
@@ -317,9 +321,10 @@ system() {
   if [ "${UNAME}" = 'Darwin' ]; then
     CLT="$(command -p xcode-select -p)"
     DIST_ID="$(command -p sw_vers -ProductName)"
+    DIST_ID_LIKE="${DIST_ID}"
     DIST_VERSION="$(command -p sw_vers -ProductVersion)"
-      # shellcheck disable=SC2016
-      case "$(echo "${DIST_VERSION}" | command -p awk -F. '{ print $1 $2 }')" in
+    # shellcheck disable=SC2016
+    case "$(echo "${DIST_VERSION}" | command -p awk -F. '{ print $1 $2 }')" in
       1013) DIST_CODENAME='High Sierra' ;;
       1014) DIST_CODENAME='Mojave' ;;
       1015) DIST_CODENAME='Catalina' ;;
@@ -336,31 +341,35 @@ system() {
     PM_INSTALL="${PM} install"
     PYCHARM_CONTENTS='/Applications/PyCharm.app/Contents'
     PYCHARM="${PYCHARM_CONTENTS}/bin"
+    VGA=1
   else
     if [ -f '/etc/os-release' ]; then
       while IFS='=' read -r name value; do
         case "${name}" in
           ID) DIST_ID="${value}"; dist_id; unset -f dist_id ;;
-          ID_LIKE) dist_id_like; unset -f dist_id_like ;;
+          ID_LIKE) DIST_ID_LIKE="${value}"; dist_id_like; unset -f dist_id_like ;;
           VERSION_ID) DIST_VERSION="${value}" ;;
           VERSION_CODENAME) DIST_CODENAME="${value}" ;;
         esac
       done < '/etc/os-release'
+      unset name value
     else
-      BUSYBOX='1'; PM=''
+      BUSYBOX=1; PM=''
     fi
     HOMEBREW_PREFIX='/home/linuxbrew/.linuxbrew'
     MACOS=false
+    VGA="$(lspci | awk '/VGA/ { print 1 }')"
   fi
 
+  [ "${VGA-}" -eq 1 ] || unset VGA
   homebrew; unset -f homebrew
   pm_install; unset -f pm_install
 
   if [ "${SSH_CLIENT-}" ] || [ "${SSH_CONNECTION-}" ] || [ "${SSH_TTY-}" ]; then
-    SSH='1'
+    SSH=1
     HOST_PROMPT="⌁ ${HOST}"
-  elif [ -f '/proc/1/environ' ] || [ -f '/.dockerenv' ]; then
-    CONTAINER='1'
+  elif [ -f '/.dockerenv' ]; then
+    CONTAINER=1
     HOST_PROMPT="ꜿ ${HOST}"
     [ ! "${DEBIAN_LIKE-}" ] || DEBIAN_FRONTEND='noninteractive'
     if [ "${NO_CACHE-}" ]; then
@@ -373,7 +382,6 @@ system; unset -f system
 
 # eval "$("${BINPM}/bin/colon" --init)"
 }
-
 
 ####################################### Executed
 #

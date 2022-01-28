@@ -1,0 +1,2 @@
+tap "microsoft/git"
+cask "git-credential-manager-core"

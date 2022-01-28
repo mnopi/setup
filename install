@@ -1,7 +1,12 @@
 #!/bin/sh
 
+directory="$(dirname "$0")"
+export PATH="${directory}/lib:${PATH}"
+
+. system.sh
+echo $DIST_ID_LIKE $VGA
 XDG_CONFIG_HOME=""
-JETBRAINS="$(git rev-parse --show-toplevel)"
+JETBRAINS="$(git -C "${directory}" rev-parse --show-toplevel "$0")"
 profile="$(cat <<EOT
 export JETBRAINS='${JETBRAINS}'
 export JETBRAINS_APPS='DataGrip GoLand Idea PyCharm RubyMine WebStorm'
