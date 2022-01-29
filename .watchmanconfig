@@ -1,0 +1,5 @@
+{
+  "enforce_root_files": true,
+  "ignore_dirs": [".git"],
+  "root_files": [".watchmanconfig"]
+}
