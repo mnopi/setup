@@ -3,6 +3,5 @@
   "ignore_dirs": [".git"],
   "ignore_vcs": [".git"],
   "root_files": [".watchmanconfig"],
-  "settle": 20,
   "suppress_recrawl_warnings": true
 }
