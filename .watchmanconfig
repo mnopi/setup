@@ -4,6 +4,5 @@
   "ignore_vcs": [".git"],
   "root_files": [".watchmanconfig"],
   "settle": 20,
-  "stdin": ["name"],
   "suppress_recrawl_warnings": true
 }
