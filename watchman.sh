@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# TODO: hacerlo para el pull o para el push.
+
 directory="$(dirname "$0")"
 watchman get-config "${directory}"
 # watchman --logfile=/tmp/setup.log --log-level 2
