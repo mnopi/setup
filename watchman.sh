@@ -1,17 +1,19 @@
 #!/bin/sh
 
-# watchman -j <<-EOT
-# ["trigger", "$(dirname "$0")", {
-#   "name": "setup",
-#   "command": ["git", "all"]
-# }]
-# EOT
-
-
-cat "$(dirname "$(watchman get-sockname | jq -r .sockname)")/log"
-watchman --logfile=/tmp/setup.log --log-level 2
-watchman watch-del /root/setup
-watchman watch-project .
-watchman -- trigger . 'setup' ignore_dirs .git -- git all
+directory="$(dirname "$0")"
+watchman get-config "${directory}"
+# watchman --logfile=/tmp/setup.log --log-level 2
+watchman watch-del "${directory}"
+watchman watch-project "${directory}"
+watchman -- trigger "${directory}" 'setup' -- git all
+watchman -j <<-EOT
+["trigger", "${directory}", {
+  "append_files": false,
+  "name": "setup",
+  "command": ["git", "all"],
+  "ignore_dirs" : [".git"]
+}]
+EOT
 watchman watch-list
-watchman trigger-list .
+watchman trigger-list "${directory}"
+tail -f "$(dirname "$(watchman get-sockname | jq -r .sockname)")/log"
