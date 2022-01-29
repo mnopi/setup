@@ -8,7 +8,6 @@ watchman watch-del "${directory}"
 
 watchman  -j <<-EOT
 ["trigger", "${directory}", {
-  "append_files": false,
   "command": ["git", "all"],
   "ignore_dirs" : [".git"],
   "name": "setup"
