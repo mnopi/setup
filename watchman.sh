@@ -6,7 +6,7 @@ watchman get-config "${directory}"
 watchman watch-del "${directory}"
 watchman watch-project "${directory}"
 watchman -- trigger "${directory}" 'setup' -- git all
-watchman --respawn-on-file-changes -j <<-EOT
+watchman  -j <<-EOT
 ["trigger", "${directory}", {
   "append_files": false,
   "name": "setup",
