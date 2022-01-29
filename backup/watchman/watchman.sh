@@ -16,7 +16,9 @@ watchman  -j <<-EOT
   "chdir": "${directory}", 
   "command": ["${directory}/show.sh"],
   "ignore_dirs" : [".git"],
-  "name": "setup"
+  "name": "setup",
+  "stdin": ["name"],
+
 }]
 EOT
 
