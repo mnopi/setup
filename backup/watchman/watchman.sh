@@ -17,8 +17,7 @@ watchman  -j <<-EOT
   "command": ["${directory}/show.sh"],
   "ignore_dirs" : [".git"],
   "name": "setup",
-  "stdin": ["name"],
-
+  "stdin": ["name"]
 }]
 EOT
 
