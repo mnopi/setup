@@ -6,12 +6,13 @@ watchman get-config "${directory}"
 watchman watch-del-all
 watchman watch-del "${directory}"
 
-watchman  -j <<-EOT
-["trigger", "${directory}", {
-  "command": ["git", "all"],
-  "name": "setup"
-}]
-EOT
+watchman -- trigger "${directory}" setup  -- ls -l
+# watchman  -j <<-EOT
+# ["trigger", "${directory}", {
+#   "command": ["git", "all"],
+#   "name": "setup"
+# }]
+# EOT
 
 watchman watch-list
 watchman trigger-list "${directory}"
