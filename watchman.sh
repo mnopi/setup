@@ -5,8 +5,6 @@ watchman get-config "${directory}"
 # watchman --logfile=/tmp/setup.log --log-level 2
 watchman watch-del-all
 watchman watch-del "${directory}"
-# watchman watch-project "${directory}"
-watchman -- trigger "${directory}" 'setup' -- git all
 
 watchman  -j <<-EOT
 ["trigger", "${directory}", {
