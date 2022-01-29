@@ -2,12 +2,15 @@
 
 set -eu
 
+# TODO: añadir los mios con @ y submodules y en meta añadir las dependencias...
+
 main() {
-  run=true; [ "${VGA-}" != '1' ] || run=false
+  run=true; [ "${CONTAINER-}" != '1' ] || run=false
   command="$(to --command="$0")"
 
   case "${1-}" in 
-    --defaults) ! $run || echo "${command}"; exit ;; 
+    --defaults) exit ;; 
+    --run) run=true ;;
   esac
   
   $run || { echo Skipping: "${command}"; exit ; }
@@ -17,7 +20,7 @@ main() {
     # verbose "${command}": Nothing To Do
     echo "${command}": Nothing To Do
   else
-    # verbose "${command}": Starting: 
+    # verbose "${command}": Starting
     echo "${command}": Starting
   fi
 }

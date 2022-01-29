@@ -2,32 +2,67 @@
 
 set -eu
 
+# TODO: system.sh (profile or not now)
+# TODO: añadir los mios con @ y submodules y en meta añadir las dependencias...
+
+filter() {
+  for i in ${defaults}; do 
+    for j in "$@"; do
+      [ "$i" != "$j" ] || { echo "$i"; break; }
+    done
+  done
+}
+
 # Options
 #   --commands  show all commands and exit.
-#   --default   show commands that will run by default and exit.
+#   --defaults   show commands that will run by default and exit.
 #   --run       forces a command to be run and be installed in the system even if does not default.
+# Examples
+#   setup --commands
+#   setup --defaults
+#   setup --dry-run
+#   setup
+#   setup --run
+#   setup jetbrains --dry-run
+#   setup jetbrains
+#   setup --dry-run jetbrains --run @git
+#   setup jetbrains --run @git
+#   setup jetbrains @git
+#   setup --run jetbrains @git
+# Notes:
+#   No skipping message when called from here (setup) since it is filtered and will not be called.
+run() {
+  for i in $1; do
+    DRY_RUN="${DRY_RUN:-}" ${host-} "$(to --script="${i}")" "${2-}"
+  done
+}
 
 main() {
   cd "$(dirname "$0")"; SETUP="${PWD}"; export SETUP
   script="${0##*/}"; export SCRIPT_D="${SETUP}/${script}.d"
-  export PATH="${SCRIPT_D}/utils:${PATH}"
-  
+  export PATH="${SCRIPT_D}:${SCRIPT_D}/utils:${PATH}"
+
+  defaults="$(run "$(to --commands)" --defaults)"
+
   for arg; do
-    case "${arg}" in
-      --default) to --scripts | sh -s "${arg}"; exit ;;
-      --dry-run) export DRY_RUN=1 ;;
-      --run) run="${arg}" ;;
-      *) set -- "${arg}" "$@"
-    esac
     shift
+    case "${arg}" in
+      --commands) to --commands; exit ;;
+      --defaults) echo "${defaults}"; exit ;;
+      --dry-run) DRY_RUN=1 ;;
+      --run) run="${arg}" ;;
+      --host=*) host="ssh ${arg#--host=}" ;;
+      -*) error "${arg}" ;;
+      *) set -- "$@" "${arg}" ;;
+    esac
   done
-  
-  commands="$(to --default)"
-  # TODO: aqui lo dejo -  ... falta el ver el resumen del --run 
+
+  [ ! "${run-}" ] || defaults="$(DRY_RUN=1 run "$(to --commands)" "${run}")"
+
   if [ "$#" -eq 0 ]; then 
-    [ ! "${run-}" ] || commands="$(to "${arg}")"
+    run "${defaults}" "${run-}"
   else
-    echo "$@" | grep b
+    run "$(filter "$@")" "${run-}"
   fi
 }
 
