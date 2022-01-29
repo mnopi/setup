@@ -6,6 +6,8 @@ watchman get-config "${directory}"
 watchman watch-del-all
 watchman watch-del "${directory}"
 # watchman watch-project "${directory}"
+
+# simple command sets always append files to true with stdin having a list and fails with git
 # watchman -- trigger "${directory}" 'setup' -- git all
 
 watchman  -j <<-EOT
