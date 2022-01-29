@@ -2,6 +2,10 @@
 
 set -eu
 
+install() {
+  true
+}
+
 main() {
   run=true; [ "${VGA-}" != '1' ] || run=false
   command="$(to --command="$0")"
