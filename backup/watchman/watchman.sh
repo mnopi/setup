@@ -10,9 +10,9 @@ watchman -- trigger "${directory}" 'setup' -- git all
 
 watchman  -j <<-EOT
 ["trigger", "${directory}", {
-  "append_files": false,
+  "append_files": true,
   "chdir": "${directory}", 
-  "command": ["git", "all"],
+  "command": ["${directory}/show.sh"],
   "ignore_dirs" : [".git"],
   "name": "setup"
 }]
