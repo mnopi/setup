@@ -14,10 +14,10 @@ watchman  -j <<-EOT
   "chdir": "${directory}", 
   "command": ["${directory}/show.sh"],
   "ignore_dirs" : [".git"],
-  "name": "setup",
-  "stdin": ["name"],
+  "name": "setup"
 }]
 EOT
+  #"stdin": ["name"],
 
 
 watchman watch-list
