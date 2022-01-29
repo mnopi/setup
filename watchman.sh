@@ -9,13 +9,11 @@ watchman watch-del "${directory}"
 watchman  -j <<-EOT
 ["trigger", "${directory}", {
   "append_files": false,
-  "chdir": "${directory}", 
   "command": ["git", "all"],
   "ignore_dirs" : [".git"],
   "name": "setup"
 }]
 EOT
-
 
 watchman watch-list
 watchman trigger-list "${directory}"
