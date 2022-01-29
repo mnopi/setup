@@ -10,6 +10,7 @@ watchman --respawn-on-file-changes -j <<-EOT
 ["trigger", "${directory}", {
   "append_files": false,
   "name": "setup",
+  "chdir": "${directory}", 
   "command": ["git", "all"],
   "ignore_dirs" : [".git"]
 }]
