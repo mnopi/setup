@@ -13,6 +13,7 @@ watchman  -j <<-EOT
 }]
 EOT
 
+
 watchman watch-list
 watchman trigger-list "${directory}"
 tail -f "$(dirname "$(watchman get-sockname | jq -r .sockname)")/log"
