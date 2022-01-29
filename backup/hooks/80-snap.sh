@@ -31,8 +31,11 @@ slack
 spotify
 skype
 snap-store
+onlyoffice-desktopeditors
+telegram-desktop
 thunderbird
 webstorm
+whatsapp-4linux
 EOF
 )"
 
