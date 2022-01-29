@@ -13,6 +13,12 @@ filter() {
   done
 }
 
+install() {
+  true 
+
+  # to install itself
+}
+
 # Options
 #   --commands  show all commands and exit.
 #   --defaults   show commands that will run by default and exit.
@@ -38,9 +44,13 @@ run() {
 }
 
 main() {
-  cd "$(dirname "$0")"; SETUP="${PWD}"; export SETUP
+  cd "$(dirname "$0")"
+
+  SETUP="${PWD}"; export SETUP
   script="${0##*/}"; export SCRIPT_D="${SETUP}/${script}.d"
   export PATH="${SCRIPT_D}:${SCRIPT_D}/utils:${PATH}"
+
+  pwd | grep -ev "^/home/|^/Users" || { echo "${script}: Can not be install in /home or /Users"; exit 1; }
 
   defaults="$(run "$(to --commands)" --defaults)"
 
