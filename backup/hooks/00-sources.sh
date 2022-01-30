@@ -21,11 +21,11 @@ update google-chrome-beta 'deb [arch=amd64] https://dl.google.com/linux/chrome/d
 
 update mongo 'deb http://repo.mongodb.org/apt/debian buster/mongodb-org/5.0 main' 'https://www.mongodb.org/static/pgp/server-5.0.asc' 
 
-update debian-installer 'deb https://deb.debian.org/debian stable main/debian-installer'
+# update debian-installer 'deb https://deb.debian.org/debian stable main/debian-installer'
 
-update kali-bleeding-edge 'deb https://http.kali.org/kali kali-bleeding-edge main contrib non-free'
+# update kali-bleeding-edge 'deb https://http.kali.org/kali kali-bleeding-edge main contrib non-free'
 
-update kali-experimental 'deb https://http.kali.org/kali kali-experimental main contrib non-free'
+# update kali-experimental 'deb https://http.kali.org/kali kali-experimental main contrib non-free'
 
 update systemback 'deb [arch=amd64] http://mirrors.bwbot.org/ stable main' keyserver.ubuntu.com 50B2C005A67B264F
 

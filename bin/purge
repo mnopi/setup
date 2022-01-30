@@ -1,0 +1,85 @@
+#!/bin/bash
+# Removes old revisions of snaps
+# CLOSE ALL SNAPS BEFORE RUNNING THIS
+set -eu
+
+
+status() {
+  # dpigs -n50
+  # sfdisk -l
+  sudo df -lhT 2>/dev/null || true
+  sudo /usr/bin/du --total --summarize --human-readable --one-file-system
+}
+
+debian() {
+  sudo apt remove -y -qq popularity-contest
+  orphan="$(deborphan --guess-all)" 
+  [ ! "${orphan-}" ] || sudo apt remove -qq -y ${orphan} 
+  sudo apt autoremove -y 
+  sudo apt clean
+  sudo apt autoclean
+  sudo aptitude purge ~c
+}
+
+flat() {
+  flatpak uninstall --unused
+  sudo flatpak uninstall --unused
+  sudo rm -rf /var/tmp/flatpak-cache-*
+}
+
+fonts() {
+  sudo woff2_compress /usr/share/fonts/opentype/*/* 2>/dev/null || true
+}
+
+journal() {
+  sudo journalctl --rotate
+  sudo journalctl --flush --rotate
+  sudo journalctl --vacuum-size=0M --vacuum-time=0s
+  sudo journalctl --vacuum-time=1s
+}
+
+ipv6() {
+  sudo rm -rf /lib/xtables/libip6t_*
+}
+
+man() {
+  sudo rm -rf /usr/share/man/??
+  sudo rm -rf /usr/share/man/??_*  
+  sudo rm -rf /usr/local/share/man/??
+  sudo rm -rf /usr/local/share/man/??_*
+  sudo rm -rf "${HOMEBREW_PREFIX:-}/local/share"/man/??
+  sudo rm -rf "${HOMEBREW_PREFIX:-}/local/share"/man/??_*
+}
+
+other() {
+  sudo -rf /var/spool/*
+  sudo -rf /tmp/*
+  rm -r ~/.cache
+  sudo rm -r ~/.cache
+  sudo rm -rf /var/log/*
+}
+
+retain() {
+  snap set system refresh.retain=2
+  sudo snap set system refresh.retain=2
+}
+
+snaps() {
+  LANG=en_US.UTF-8 ${1-} snap list --all | awk '/disabled/{print $1, $3}' |
+    while read snapname revision; do
+        sudo snap remove "${snapname}" --revision="${revision}"
+    done
+}
+
+main() {
+  # status
+  flat
+  ipv6
+  man
+  retain
+  snaps
+  snaps sudo
+  # status
+}
+
+main

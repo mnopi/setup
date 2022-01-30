@@ -1,0 +1,22 @@
+[Unit]
+Description=Heartbeat
+After=network.target remote-fs.target heartbeat.socket
+Requires=heartbeat.socket
+Conflicts=shutdown.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /root/setup/examples/socket/hearbeat.sh
+RemainAfterExit=no
+ExecStop=pkill -x hearbeat.sh
+Restart=on-failure
+# User=root
+# Group=root
+# StandardInput=socket
+StandardOutput=inherit
+# StandardError=journal
+SyslogIdentifier=watchman
+
+
+[Install]
+WantedBy=multi-user.target

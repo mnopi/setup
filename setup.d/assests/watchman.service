@@ -1,0 +1,18 @@
+[Unit]
+Description=Watchman
+After=remote-fs.target
+Conflicts=shutdown.target
+
+[Service]
+ExecStart=/bin/watchman --foreground --inetd
+ExecStop=pkill -x watchman
+Restart=on-failure
+User=root
+Group=root
+StandardInput=socket
+StandardOutput=inherit
+StandardError=journal
+SyslogIdentifier=watchman
+
+[Install]
+WantedBy=multi-user.target

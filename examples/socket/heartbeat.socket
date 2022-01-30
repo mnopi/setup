@@ -1,0 +1,15 @@
+[Unit]
+Description=Hearbeat
+PartOf=heartbeat.service
+
+[Socket]
+ListenStream=0.0.0.0:6666
+# ListenStream=/run/watchman.socket
+Accept=true
+# Accept=false
+# SocketMode=0664
+# SocketUser=root
+# SocketGroup=root
+
+[Install]
+WantedBy=sockets.target

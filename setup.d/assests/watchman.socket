@@ -1,0 +1,12 @@
+[Unit]
+Description=Watchman socket
+
+[Socket]
+ListenStream=/run/watchman.socket
+Accept=false
+SocketMode=0664
+SocketUser=root
+SocketGroup=root
+
+[Install]
+WantedBy=sockets.target
