@@ -1,0 +1,47 @@
+
+# Before -- line is the usage
+# After -- describe the options
+#
+# Format for each line of options:
+#   <opt-spec><flags>*<arg-hint>? SP+ help LF
+#
+#   <opt-spec>: before comma is short option char, after comma long option name. One is required. Example: h,help or dry-run or f
+#   <flags>: *, =, ? or !
+#	= if takes and argument
+#	? if takes an optional argument 
+#	  (--stuck-long to be able to unambiguisly parse the optional argument) 
+# 	  git-sh-setup.sh (If $OPTIONS_STUCKLONG is set, then rev-parse is done with --stuck-long)
+
+# Examples:
+# https://github.com/git/git/blob/master/contrib/git-resurrect.sh
+# https://github.com/git/git/blob/master/git-bisect.sh
+
+###################
+# "$(git --exec-path)"/
+# git-shell x 
+# git-sh-i18n
+# git-sh-i18n-envsubst x
+# git-sh-prompt
+# git-sh-setup
+##################
+# envsubst is like eval and indirect variables, examples in gettext.sh
+##################
+
+OPTS_SPEC="\
+git-parse-1 [<options>] <args>...
+
+git-parse-1 does foo and bar!
+--
+h,help    show the help
+
+foo       some nifty option --foo
+bar=      some cool option --bar with an argument
+baz=arg   another cool option --baz with a named argument
+qux?path  qux may take a path argument but has meaning by itself
+
+  An option group Header
+C?        option C with an optional argument"
+
+eval "$(echo "$OPTS_SPEC" | git rev-parse  --parseopt --keep-dashdash -- "$@" || echo exit $?)"
+echo "$@"
+
