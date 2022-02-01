@@ -1,0 +1,34 @@
+pvs
+
+# rename 
+vgrename old new
+vi /etc/fstab
+vi /etc/initramfs-tools/conf.d/resume
+update-initramfs -u -k all
+reboot
+
+# extend
+pvs
+/dev/sdb5 msi
+
+
+#####
+# reboot
+[ -f /var/run/reboot-required ] && cat /var/run/reboot-required
+
+# need restart session
+apt install needrestart
+needrestart
+
+
+# processes need to be restarted after upgrade
+apt install debian-goodies
+checkrestart
+
+# or:
+$ grep installed /var/log/dpkg.log
+$ grep upgrade /var/log/dpkg.log
+$ tail -f /var/log/apt/history.log
+$ grep libc /var/log/dpkg.log
+
+
