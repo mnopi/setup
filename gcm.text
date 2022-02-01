@@ -1,0 +1,29 @@
+
+brew uninstall --cask git-credential-manager-core
+git-credential-manager-core --system configure
+git config --global credential.credentialStore keychain
+
+sudo dpkg -i gcmcore-linux_amd64.2.0.632.34631.deb
+git-credential-manager-core configure --system
+
+sudo apt install -y pass
+gpg --gen-key
+pass init root@root.com
+export GCM_CREDENTIAL_STORE=gpg
+git config --global credential.credentialStore gpg
+
+export GCM_CREDENTIAL_STORE=secretservice
+git config --global credential.credentialStore secretservice
+
+export GCM_PLAINTEXT_STORE_PATH=plaintextStorePath
+git config --global credential.credentialStore plaintext   # Default: ~/.gcm/store
+git config --global credential.plaintextStorePath /mnt/external-drive/credentials 
+
+https://github.com/GitCredentialManager/git-credential-manager/tarball/main
+tar -xvf <path-to-tarball> -C /usr/local/bin
+git-credential-manager-core configure
+
+git clone https://github.com/j5pu/secrets
+
+cat /home/j5pu/.gcm/store/git/https/github.com/j5pu.credential
+
