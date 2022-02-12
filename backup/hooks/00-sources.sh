@@ -17,6 +17,11 @@ update() {
 update docker 'deb [arch=amd64 signed-by=/usr/share/keyrings/docker-ce-archive-keyring.gpg] https://download.docker.com/linux/debian buster stable'
 dearmor https://download.docker.com/linux/ubuntu/gpg /usr/share/keyrings/docker-archive-keyring.gpg 
 
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/etc/apt/trusted.gpg.d/githubcli-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+sudo apt update
+sudo apt install gh
+
 update google-chrome-beta 'deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main' 'https://dl.google.com/linux/linux_signing_key.pub'
 
 update mongo 'deb http://repo.mongodb.org/apt/debian buster/mongodb-org/5.0 main' 'https://www.mongodb.org/static/pgp/server-5.0.asc' 

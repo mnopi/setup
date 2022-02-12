@@ -1,0 +1,43 @@
+#!/bin/sh
+# CONCLUSION: zsh si el $0 no en funcion tiene el valor del fichero 
+#  y en funcion el nombre de la funcion, osea solo se puede comprobar en funcion si esta siendo sourced o no. 
+# por eso fallaba en secrets.sh cuando se hacia source. 
+# se puede hacer con el 'comm' pero si tiene shebang que siempre va a tener.
+# pero el mac no lo tiene. Pero con funcion falla en zsh cuando  zsh proc 
+under="$_"
+[ "${1-}" != '--test' ] || shift 
+pid="${1:-$$}"
+ppid="${2:-$PPID}"
+echo "${ZSH_EVAL_CONTEXT:-${0##*/}}"
+if echo "${ZSH_EVAL_CONTEXT:-${0##*/}}" | grep -qE ":file$|bash$|dash$|sh$"; then
+    echo SOURCED 
+else 
+echo EXE 
+fi
+
+run() {
+  echo ">>>>>>>>> ${2}" "${1}"
+  #for i in args cmd comm; do 
+  #  echo "${i}:" "$(command ps -o "${i}=" "${1}")"
+  #done
+  echo "_: ${under}"
+  echo cmdline: "$(sed "s/\x0/ /g" "/proc/${1}/cmdline")"
+  echo comm: "$(cat "/proc/${1}/comm")"
+  for file in exe cwd; do
+    echo "${file}:" "$(readlink "/proc/${1}/${file}")"
+  done
+  for i in Name Umask State Tgid Ngid Pid PPid; do
+    echo "${i}:" "$(awk "/^${i}:/ { print \$2 }" "/proc/${1}/status")"
+  done
+}
+
+main() {
+  echo "######################################### ${4:-script}"
+  echo "\$0:" "${3:-$0}"
+  run "${pid}" PID
+  run "${ppid}" PPID
+}
+
+main "$@"
+
+# proc $$ $$PPID $0 source

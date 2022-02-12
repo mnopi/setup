@@ -1,4 +1,16 @@
 
+#
+<<< 'print(1)' python3
+python3 -c 'print(1)'
+<<<'scale=1;(3396721)*4096/2^30' bc
+
+# disk
+df -H /
+df -H / | tail -1 | awk '{ print $1 }'
+
+# Root reserved space 5%
+sudo tune2fs -l "$(df -H / | tail -1 | awk '{ print $1 }')" | grep "Reserved block count:" | awk '{ print $NF-1 }'
+
 apt install linux-headers-amd64
 
 # non-free packages, drivers
